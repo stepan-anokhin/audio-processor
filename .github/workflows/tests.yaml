@@ -22,3 +22,5 @@ jobs:
         run: poetry run flake8 audio_transformers tests --count --max-complexity=10 --max-line-length=120 --statistics
       - name: Run Tests
         run: poetry run pytest
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2

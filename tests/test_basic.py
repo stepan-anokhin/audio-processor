@@ -1,2 +1,5 @@
+from audio_transformers.main import main
+
+
 def test_dummy():
-    assert True
+    assert main() is None
