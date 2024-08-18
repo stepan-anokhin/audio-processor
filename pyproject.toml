@@ -3,7 +3,10 @@ name = "audio-transformers"
 version = "0.0.1"
 description = ""
 authors = ["Stepan Anokhin <stepan.anokhin@gmail.com>"]
+include = ["README.md"]
 readme = "README.md"
+homepage = "https://github.com/stepan-anokhin/audio-transformers"
+repository = "https://github.com/stepan-anokhin/audio-transformers"
 
 [tool.poetry.dependencies]
 python = "^3.10"
