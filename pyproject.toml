@@ -1,12 +1,13 @@
 [tool.poetry]
 name = "audio-transformers"
-version = "0.0.1"
+version = "0.0.2"
 description = ""
 authors = ["Stepan Anokhin <stepan.anokhin@gmail.com>"]
 include = ["README.md"]
 readme = "README.md"
 homepage = "https://github.com/stepan-anokhin/audio-transformers"
 repository = "https://github.com/stepan-anokhin/audio-transformers"
+license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.10"
