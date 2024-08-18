@@ -1,0 +1,24 @@
+name: Tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install poetry
+        run: pip install poetry
+      - name: Install dependencies
+        run: poetry install
+      - name: Check code style
+        run: poetry run black --check --line-length 120 audio_processor tests
+      - name: Lint the code
+        run: poetry run flake8 audio_processor tests --count --max-complexity=10 --max-line-length=120 --statistics
+      - name: Run Tests
+        run: poetry run pytest
