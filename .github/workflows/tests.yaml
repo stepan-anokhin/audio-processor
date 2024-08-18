@@ -17,8 +17,8 @@ jobs:
       - name: Install dependencies
         run: poetry install
       - name: Check code style
-        run: poetry run black --check --line-length 120 audio_processor tests
+        run: poetry run black --check --line-length 120 audio_transformers tests
       - name: Lint the code
-        run: poetry run flake8 audio_processor tests --count --max-complexity=10 --max-line-length=120 --statistics
+        run: poetry run flake8 audio_transformers tests --count --max-complexity=10 --max-line-length=120 --statistics
       - name: Run Tests
         run: poetry run pytest

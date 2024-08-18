@@ -1,7 +1,7 @@
-# Audio Processor
+# Audio Transformers
 
-[![Tests](https://github.com/stepan-anokhin/audio-processor/actions/workflows/tests.yaml/badge.svg)](https://github.com/stepan-anokhin/audio-processor/actions/workflows/tests.yaml)
-[![Licence: MIT](https://img.shields.io/pypi/l/audio-processor)](https://github.com/stepan-anokhin/audio-processor/blob/master/LICENSE)
+[![Tests](https://github.com/stepan-anokhin/audio-transformers/actions/workflows/tests.yaml/badge.svg)](https://github.com/stepan-anokhin/audio-transformers/actions/workflows/tests.yaml)
+[![Licence: MIT](https://img.shields.io/pypi/l/audio-transformers)](https://github.com/stepan-anokhin/audio-transformers/blob/master/LICENSE)
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-black.svg)](https://github.com/ambv/black)
 
 A python library for audio signal transformations. 
@@ -9,13 +9,13 @@ A python library for audio signal transformations.
 ## Setup
 
 ```shell
-pip install audio-processor
+pip install audio-transformers
 ```
 
 ## Command-Line Interface
 
 ```shell
-audio transform input/file/path.mp3 output/file/path/mp3 --config=transformations.yaml
+audio transform input.mp3 output.mp3 --config=transformations.yaml
 ```
 
 ## Transformations
