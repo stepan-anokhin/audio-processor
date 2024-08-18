@@ -1,12 +1,13 @@
 # Audio Transformers
 
 [![Tests](https://github.com/stepan-anokhin/audio-transformers/actions/workflows/tests.yaml/badge.svg)](https://github.com/stepan-anokhin/audio-transformers/actions/workflows/tests.yaml)
-[![Licence: MIT](https://img.shields.io/pypi/l/audio-transformers)](https://github.com/stepan-anokhin/audio-transformers/blob/master/LICENSE)
+[![Coverage Status](https://coveralls.io/repos/github/stepan-anokhin/audio-transformers/badge.svg?branch=master)](https://coveralls.io/github/stepan-anokhin/audio-transformers?branch=master)
 ![Python version support](https://img.shields.io/pypi/pyversions/audio-transformers)
 [![PyPI version](https://img.shields.io/pypi/v/audio-transformers.svg?style=flat)](https://pypi.org/project/audio-transformers/)
+[![Licence: MIT](https://img.shields.io/pypi/l/audio-transformers)](https://github.com/stepan-anokhin/audio-transformers/blob/master/LICENSE)
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-black.svg)](https://github.com/ambv/black)
 
-A python library for audio signal transformations. 
+A python library for audio signals transformations.
 
 ## Setup
 
@@ -21,8 +22,6 @@ audio transform input.mp3 output.mp3 --config=transformations.yaml
 ```
 
 ## Transformations
-
-
 
 ## API
 
