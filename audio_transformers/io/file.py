@@ -90,7 +90,16 @@ class AudioFile(AbstractContextManager):
     @cached_property
     def duration(self) -> float:
         """Get file duration."""
+        if self.mode == "w":
+            raise NotImplementedError("Duration is not implemented in write mode.")
         return probe.duration(self.path)
+
+    @cached_property
+    def samples(self) -> int:
+        """Get total approximate samples."""
+        if self.mode == "w":
+            raise NotImplementedError("Samples count is not available in write mode.")
+        return int(self.duration * self.rate)
 
     def read(self, n: int = -1) -> Signal:
         """Read entire file."""
