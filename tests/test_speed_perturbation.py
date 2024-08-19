@@ -19,8 +19,9 @@ def test_speed_perturbation_slow_down():
 
     input_length = probe_signal.shape[-1]
     output_length = output_signal.shape[-1]
-    first_half = output_signal[:, : output_length // 2]
-    second_half = output_signal[:, output_length // 2 :]
+    length_half = output_length // 2
+    first_half = output_signal[:, :length_half]
+    second_half = output_signal[:, length_half:]
 
     assert output_length / input_length == pytest.approx(1 / speed_factor, rel=0.05)
     assert fundamental_freq(first_half, rate) == pytest.approx(freq_first)
