@@ -9,3 +9,12 @@ def pulse(freq: float, rate: int, time_start: float = -1, time_stop: float = 1) 
     time = np.linspace(time_start, time_stop, int(duration * rate), endpoint=False)
     signal = scipy.signal.gausspulse(time, fc=freq, retquad=False, retenv=False)
     return signal.reshape((1, len(signal)))
+
+
+def sinusoid(freq: float, rate: int, time_start=0, time_stop=1, phase: float = 0) -> NDArray[np.float32]:
+    """Generate sinusoid signal."""
+    duration = time_stop - time_start
+    time = np.linspace(time_start, time_stop, int(duration * rate))
+    angular_freq = 2 * np.pi * freq
+    signal = np.sin(time * angular_freq + phase)
+    return signal.reshape((1, len(signal)))
