@@ -1,6 +1,6 @@
 import abc
 from abc import abstractmethod
-from typing import Dict, Callable, TypeAlias, Type, Mapping
+from typing import Callable, TypeAlias, Type, Mapping
 
 from audio_transformers.config.model import TransformSpec
 from audio_transformers.core.transform import Transform
