@@ -11,10 +11,10 @@ def test_high_pass_pulse():
     high_probe = pulse(cutoff * 2, rate)  # Cutoff + octave
 
     aug = HighPass(cutoff_freq=cutoff)
-    passed = aug(high_probe, rate)
-    stopped = aug(low_probe, rate)
+    passed = aug(high_probe)
+    stopped = aug(low_probe)
 
-    assert passed.max() / stopped.max() > math.sqrt(2)
+    assert passed.data.max() / stopped.data.max() > math.sqrt(2)
 
 
 def test_high_pass_sin():
@@ -24,7 +24,7 @@ def test_high_pass_sin():
     high_probe = sinusoid(cutoff * 2, rate)  # Cutoff + octave
 
     aug = HighPass(cutoff_freq=cutoff)
-    passed = aug(high_probe, rate)
-    stopped = aug(low_probe, rate)
+    passed = aug(high_probe)
+    stopped = aug(low_probe)
 
-    assert passed.max() / stopped.max() > math.sqrt(2)
+    assert passed.data.max() / stopped.data.max() > math.sqrt(2)

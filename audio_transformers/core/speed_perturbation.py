@@ -1,10 +1,10 @@
 import math
 
 import numpy as np
-from numpy.typing import NDArray
 from scipy.signal import ShortTimeFFT
 from scipy.signal.windows import gaussian
 
+from audio_transformers.core.model import Signal
 from audio_transformers.core.transform import Transform
 
 
@@ -19,12 +19,12 @@ class SpeedPerturbation(Transform):
         self.speed_factor: float = speed_factor
         self.window_size: float = window_size
 
-    def __call__(self, signal: NDArray[np.float32], rate: int) -> NDArray[np.float32]:
-        window_size_samples = int(self.window_size * rate)  # Window size in samples
+    def __call__(self, signal: Signal) -> Signal:
+        window_size_samples = int(self.window_size * signal.rate)  # Window size in samples
         hop_samples = window_size_samples // 2
         window = gaussian(window_size_samples, std=window_size_samples // 2, sym=True)
-        stft = ShortTimeFFT(window, hop=hop_samples, fs=rate, scale_to="magnitude")
-        spectre = stft.stft(signal)
+        stft = ShortTimeFFT(window, hop=hop_samples, fs=signal.rate, scale_to="magnitude")
+        spectre = stft.stft(signal.data)
 
         # Now we need to stretch or squeeze spectre depending on the speed factor
         spectre_samples = spectre.shape[-1]
@@ -39,4 +39,4 @@ class SpeedPerturbation(Transform):
             target_spectre[:, :, i] = spectre[:, :, start_index:end_index].mean(axis=-1)
 
         output = stft.istft(target_spectre)
-        return output
+        return Signal(output, signal.rate)

@@ -1,8 +1,7 @@
 import abc
 from abc import abstractmethod
 
-import numpy as np
-from numpy.typing import NDArray
+from audio_transformers.core.model import Signal
 
 
 class Transform(abc.ABC):
@@ -14,13 +13,9 @@ class Transform(abc.ABC):
     uniform: bool = True
 
     @abstractmethod
-    def __call__(self, signal: NDArray[np.float32], rate: int) -> NDArray[np.float32]:
+    def __call__(self, signal: Signal) -> Signal:
         """Apply transformation to the given signal samples.
 
-        :param signal: Signal data with shape=(n_channels, n_samples), dtype=float32
-        :param rate: Sampling rate (hz)
+        :param signal: Input signal
         :return: Transformed signal
-
-        As for some transformations we may want to specify frequency-valued parameters
-        it is required to pass sampling rate in order to use them correctly.
         """

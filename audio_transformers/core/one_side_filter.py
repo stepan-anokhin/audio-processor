@@ -2,8 +2,8 @@ from typing import TypeAlias, Literal
 
 import numpy as np
 import scipy
-from numpy.typing import NDArray
 
+from audio_transformers.core.model import Signal
 from audio_transformers.core.transform import Transform
 
 OneSideType: TypeAlias = Literal["highpass", "lowpass"]
@@ -22,8 +22,8 @@ class OneSideFilter(Transform):
         self.cutoff_freq: float = cutoff_freq
         self.roll_off: int = roll_off
 
-    def __call__(self, signal: NDArray[np.float32], rate: int) -> NDArray[np.float32]:
-        nyquist_freq = rate // 2
+    def __call__(self, signal: Signal) -> Signal:
+        nyquist_freq = signal.rate // 2
         if self.cutoff_freq >= nyquist_freq and self.type == "lowpass":
             return signal
 
@@ -34,13 +34,13 @@ class OneSideFilter(Transform):
             self.cutoff_freq,
             btype=self.type,
             analog=False,
-            fs=rate,
+            fs=signal.rate,
             output="sos",
         )
 
-        processed = np.zeros_like(signal, dtype=np.float32)
-        for channel in range(signal.shape[0]):
-            sos_start = scipy.signal.sosfilt_zi(sos_coefficients) * signal[channel, 0]
-            processed_channel, _ = scipy.signal.sosfilt(sos_coefficients, signal[channel, :], zi=sos_start)
+        processed = np.zeros_like(signal.data, dtype=np.float32)
+        for channel in range(signal.data.shape[0]):
+            sos_start = scipy.signal.sosfilt_zi(sos_coefficients) * signal.data[channel, 0]
+            processed_channel, _ = scipy.signal.sosfilt(sos_coefficients, signal.data[channel, :], zi=sos_start)
             processed[channel, :] = processed_channel
-        return processed
+        return Signal(processed, signal.rate)
