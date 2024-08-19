@@ -15,6 +15,7 @@ class Signal:
 
     Signal data must have shape=(n_channels, n_samples) and dtype=float32.
     """
+
     data: NDArray[np.float32]
     rate: int
 

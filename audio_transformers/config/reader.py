@@ -14,16 +14,18 @@ from audio_transformers.core.pitch_shift import PitchShift
 from audio_transformers.core.speed_perturbation import SpeedPerturbation
 from audio_transformers.core.transform import Transform
 
-DEFAULT_TRANSFORMS: Mapping[str, Initializer] = MappingProxyType({
-    "BandPass": BasicInit(BandPass),
-    "BandStop": BasicInit(BandStop),
-    "GaussianNoise": BasicInit(GaussianNoise),
-    "HighPass": BasicInit(HighPass),
-    "Inversion": BasicInit(Inversion),
-    "LowPass": BasicInit(LowPass),
-    "PitchShift": BasicInit(PitchShift),
-    "SpeedPerturbation": BasicInit(SpeedPerturbation),
-})
+DEFAULT_TRANSFORMS: Mapping[str, Initializer] = MappingProxyType(
+    {
+        "BandPass": BasicInit(BandPass),
+        "BandStop": BasicInit(BandStop),
+        "GaussianNoise": BasicInit(GaussianNoise),
+        "HighPass": BasicInit(HighPass),
+        "Inversion": BasicInit(Inversion),
+        "LowPass": BasicInit(LowPass),
+        "PitchShift": BasicInit(PitchShift),
+        "SpeedPerturbation": BasicInit(SpeedPerturbation),
+    }
+)
 
 
 class ConfigReader:

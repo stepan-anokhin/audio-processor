@@ -16,5 +16,5 @@ def test_pitch_shift_sin(channels):
     output_signal = aug(probe_signal)
     output_freq = fundamental_freq(output_signal)
 
-    assert output_freq == pytest.approx(probe_freq * 2 ** shift)
+    assert output_freq == pytest.approx(probe_freq * 2**shift)
     assert output_signal.data.shape == probe_signal.data.shape

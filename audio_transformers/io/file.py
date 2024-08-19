@@ -24,14 +24,13 @@ class AudioFile(AbstractContextManager):
     _file: SimpleAudioReader | SimpleAudioWriter
 
     def __init__(
-            self,
-            path: PathLike | str,
-            mode: Mode = "r",
-            rate: int | None = None,
-            block_duration: float | None = None,
-            block_size: int | None = None,
+        self,
+        path: PathLike | str,
+        mode: Mode = "r",
+        rate: int | None = None,
+        block_duration: float | None = None,
+        block_size: int | None = None,
     ):
-
         """
         :param path: audio file path.
         """
@@ -83,9 +82,9 @@ class AudioFile(AbstractContextManager):
     def _init_file(self):
         """Initialize file."""
         if self.mode == "r":
-            self._file = ffmpegio.open(self.path, "ra", blocksize=self.block_size, sample_fmt='flt')
+            self._file = ffmpegio.open(self.path, "ra", blocksize=self.block_size, sample_fmt="flt")
         else:  # write mode
-            self._file = ffmpegio.open(self.path, "wa", rate_in=self.rate, sample_fmt='flt')
+            self._file = ffmpegio.open(self.path, "wa", rate_in=self.rate, sample_fmt="flt")
 
     @cached_property
     def duration(self) -> float:

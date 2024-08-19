@@ -27,7 +27,7 @@ class PitchShift(Transform):
 
         # Now we need to scale frequencies of the spectre
         spectre_func = interp1d(stft.f, spectre, axis=-2, bounds_error=False, fill_value=0.0)
-        factor = 2 ** -self.shift
+        factor = 2**-self.shift
         result_spectre = np.zeros_like(spectre)
         for i, freq in enumerate(stft.f):
             result_spectre[:, i, :] = spectre_func(freq * factor)
