@@ -38,7 +38,10 @@ class JsonFormatter(Formatter):
 
 
 class Tabular(abc.ABC):
-    """Abstract parent for table-representable data item."""
+    """Abstract parent for table-representable data item.
+
+    Should be inherited by classes that want to integrate with Console tabular format.
+    """
 
     @classmethod
     @abstractmethod
@@ -56,7 +59,7 @@ class TableFormatter(Formatter):
     def dumps(self, data: Sequence[Tabular]) -> str:
         """Tabulate data items."""
         if len(data) == 0:
-            return ''
+            return ""
         item_type: Type[Tabular] = type(data[0])
         if not issubclass(item_type, Tabular):
             raise ValueError(f"Cannot tabulate data type: {item_type.__name__}")
@@ -71,11 +74,13 @@ Format: TypeAlias = Literal["table", "json", "yaml"]
 class Console:
     """Console output utils."""
 
-    FORMATTERS: Mapping[Format, Formatter] = MappingProxyType({
-        "json": JsonFormatter(),
-        "yaml": YamlFormatter(),
-        "table": TableFormatter(),
-    })
+    FORMATTERS: Mapping[Format, Formatter] = MappingProxyType(
+        {
+            "json": JsonFormatter(),
+            "yaml": YamlFormatter(),
+            "table": TableFormatter(),
+        }
+    )
 
     @staticmethod
     def dumps(data: Sequence[Any], format: Format) -> str:
@@ -91,21 +96,21 @@ class Console:
         return print(Console.dumps(data, format), file=file)
 
     @staticmethod
-    def error(message: str, prefix: str = "ERROR:", end: str = '\n', file: TextIO | None = None):
+    def error(message: str, prefix: str = "ERROR:", end: str = "\n", file: TextIO | None = None):
         """Print error message."""
         print(colored(prefix, "red", attrs=["bold"]), message, end=end, file=file)
 
     @staticmethod
-    def fatal(message: str, end: str = '\n', file: TextIO | None = None):
+    def fatal(message: str, end: str = "\n", file: TextIO | None = None):
         """Print fatal error message."""
         Console.error(message, prefix="FATAL:", end=end, file=file)
 
     @staticmethod
-    def warning(message: str, prefix: str = "WARNING:", end: str = '\n', file: TextIO | None = None):
+    def warning(message: str, prefix: str = "WARNING:", end: str = "\n", file: TextIO | None = None):
         """Print warning message."""
         print(colored(prefix, "yellow", attrs=["bold"]), message, end=end, file=file)
 
     @staticmethod
-    def ok(message: str, prefix: str = "OK:", end: str = '\n', file: TextIO | None = None):
+    def ok(message: str, prefix: str = "OK:", end: str = "\n", file: TextIO | None = None):
         """Print OK message."""
         print(colored(prefix, "green", attrs=["bold"]), message, end=end, file=file)

@@ -2,6 +2,7 @@ import sys
 
 import fire
 
+from audio_transformers.cli.datasets import DatasetsHandler
 from audio_transformers.cli.errors import CliUsageError
 from audio_transformers.utils.console import Console
 
@@ -10,7 +11,7 @@ class CommandHandler:
     """Audio transformation and augmentation tool."""
 
     def __init__(self):
-        pass
+        self.datasets = DatasetsHandler()
 
 
 def run(name: str = "audio"):
