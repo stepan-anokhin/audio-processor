@@ -5,11 +5,11 @@ from audio_transformers.core.speed_perturbation import SpeedPerturbation
 from tests.utils import sinusoid, fundamental_freq
 
 
-def test_speed_perturbation_slow_down():
+@pytest.mark.parametrize("speed_factor", (0.5, 2.0))
+def test_speed_perturbation(speed_factor):
     rate = 16000
     freq_first = 1000
     freq_second = 4000
-    speed_factor = 0.5
 
     # Two sinusoid with different frequencies concatenated
     probe_signal = np.concatenate([sinusoid(freq_first, rate), sinusoid(freq_second, rate)], axis=1)
