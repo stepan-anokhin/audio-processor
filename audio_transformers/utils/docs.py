@@ -39,7 +39,7 @@ class Docs:
         """Get docs from function."""
         full_docs: str = func.__doc__ or ""
         if isinstance(func, type):
-            full_docs += func.__init__.__doc__
+            full_docs += "\n" + (func.__init__.__doc__ or "")
 
         brief: str = full_docs.split("\n", maxsplit=1)[0]
 

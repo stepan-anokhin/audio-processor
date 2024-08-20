@@ -1,5 +1,6 @@
 import abc
 import json
+import sys
 from abc import abstractmethod
 from dataclasses import asdict
 from io import StringIO
@@ -74,7 +75,11 @@ Format: TypeAlias = Literal["table", "json", "yaml"]
 class Console:
     """Console output utils."""
 
-    FORMATTERS: Mapping[Format, Formatter] = MappingProxyType(
+    _formatters: Mapping[str, Formatter]
+    _output_file: TextIO
+    _errors_file: TextIO
+
+    DEFAULT_FORMATTERS: Mapping[Format, Formatter] = MappingProxyType(
         {
             "json": JsonFormatter(),
             "yaml": YamlFormatter(),
@@ -82,35 +87,39 @@ class Console:
         }
     )
 
-    @staticmethod
-    def dumps(data: Sequence[Any], format: Format) -> str:
+    def __init__(
+        self,
+        formatters: Mapping[str, Formatter] | None = None,
+        output_file: TextIO | None = None,
+        errors_file: TextIO | None = None,
+    ):
+        self._formatters = formatters or self.DEFAULT_FORMATTERS
+        self._output_file = output_file or sys.stdout
+        self._errors_file = errors_file or sys.stderr
+
+    def dumps(self, data: Sequence[Any], format: Format) -> str:
         """Convert to string ready for console output."""
-        formatter = Console.FORMATTERS.get(format)
+        formatter = self._formatters.get(format)
         if formatter is None:
             raise ValueError(f"Unknown formatter: {format}")
         return formatter.dumps(data)
 
-    @staticmethod
-    def output(data: Sequence[Any], format: Format = "table", file: TextIO | None = None):
+    def output(self, data: Sequence[Any], format: Format = "table"):
         """Output data collection."""
-        return print(Console.dumps(data, format), file=file)
+        return print(self.dumps(data, format), file=self._output_file)
 
-    @staticmethod
-    def error(message: str, prefix: str = "ERROR:", end: str = "\n", file: TextIO | None = None):
+    def error(self, message: str, prefix: str = "ERROR:", end: str = "\n"):
         """Print error message."""
-        print(colored(prefix, "red", attrs=["bold"]), message, end=end, file=file)
+        print(colored(prefix, "red", attrs=["bold"]), message, end=end, file=self._errors_file)
 
-    @staticmethod
-    def fatal(message: str, end: str = "\n", file: TextIO | None = None):
+    def fatal(self, message: str, end: str = "\n"):
         """Print fatal error message."""
-        Console.error(message, prefix="FATAL:", end=end, file=file)
+        self.error(message, prefix="FATAL:", end=end)
 
-    @staticmethod
-    def warning(message: str, prefix: str = "WARNING:", end: str = "\n", file: TextIO | None = None):
+    def warning(self, message: str, prefix: str = "WARNING:", end: str = "\n"):
         """Print warning message."""
-        print(colored(prefix, "yellow", attrs=["bold"]), message, end=end, file=file)
+        print(colored(prefix, "yellow", attrs=["bold"]), message, end=end, file=self._errors_file)
 
-    @staticmethod
-    def ok(message: str, prefix: str = "OK:", end: str = "\n", file: TextIO | None = None):
+    def ok(self, message: str, prefix: str = "OK:", end: str = "\n"):
         """Print OK message."""
-        print(colored(prefix, "green", attrs=["bold"]), message, end=end, file=file)
+        print(colored(prefix, "green", attrs=["bold"]), message, end=end, file=self._output_file)

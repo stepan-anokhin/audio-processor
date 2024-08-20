@@ -14,4 +14,5 @@ class CliConfig:
     transforms: Mapping[str, Initializer] = DEFAULT_TRANSFORMS
     input_block_duration: float = 60.0  # 10m blocks
     public_datasets: Sequence[DatasetSource] = DEFAULT_DATASETS
-    file: TextIO = sys.stdout
+    output_file: TextIO = sys.stdout
+    errors_file: TextIO = sys.stderr

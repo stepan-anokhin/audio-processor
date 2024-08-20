@@ -8,6 +8,9 @@ class GaussianNoise(Transform):
     """Add gaussian noise to the signal."""
 
     def __init__(self, amplitude: float):
+        """
+        :param amplitude: Noise amplitude.
+        """
         self.amplitude: float = amplitude
 
     def __call__(self, signal: Signal) -> Signal:

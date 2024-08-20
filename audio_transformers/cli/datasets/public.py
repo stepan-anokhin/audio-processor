@@ -4,14 +4,13 @@ import os.path
 from dataclasses import asdict
 from dataclasses import dataclass
 from functools import cached_property
-from typing import Sequence, Tuple
+from typing import Sequence, Tuple, Callable, Any
 
 import humanize
 import requests
 import yaml
 from dacite import from_dict
 from humanize import naturalsize
-from tqdm import tqdm
 
 import audio_transformers.utils.archives as archives
 import audio_transformers.utils.urls as urls
@@ -112,7 +111,26 @@ class DatasetSource(Tabular):
         """Represent as a table row."""
         return [self.name, self.format, naturalsize(self.size), naturalsize(self.size_archive)]
 
-    def pull(self, path: str, config: DownloadConfig = DownloadConfig()) -> PublicDataset:
+    def download_bytes(self) -> int:
+        """Check download bytes."""
+        with requests.head(self.url, stream=True) as resp:
+            total_size_bytes = int(resp.headers["Content-Length"])
+        return total_size_bytes
+
+    def should_pool(self, path: str) -> bool:
+        """Check if dataset should be pooled."""
+        dataset = PublicDataset(path)
+        with requests.head(self.url, stream=True) as resp:
+            etag = resp.headers["ETag"]
+
+        return etag != dataset.etag
+
+    def pull(
+        self,
+        path: str,
+        config: DownloadConfig = DownloadConfig(),
+        progress: Callable[[int], Any] | None = None,
+    ) -> PublicDataset:
         """Download remote dataset to the local directory."""
         dataset = PublicDataset(path)
 
@@ -129,12 +147,11 @@ class DatasetSource(Tabular):
             archive_dir = os.path.abspath(config.temp_folder.format(dataset_path=dataset.path))
             archive_path = os.path.join(archive_dir, archive_name)
             os.makedirs(archive_dir, exist_ok=True)
-            total_size = int(resp.headers["Content-Length"])
             with open(archive_path, "wb") as archive:
-                with tqdm(total=total_size, unit="bytes", unit_scale=True) as progress:
-                    for chunk in resp.iter_content(chunk_size=config.chunk_size):
-                        archive.write(chunk)
-                        progress.update(len(chunk))
+                for chunk in resp.iter_content(chunk_size=config.chunk_size):
+                    archive.write(chunk)
+                    if progress is not None:
+                        progress(len(chunk))
 
         archives.extract_all(archive_path, dataset.path)
         metadata = Metadata(name=self.name, url=self.url, etag=etag)

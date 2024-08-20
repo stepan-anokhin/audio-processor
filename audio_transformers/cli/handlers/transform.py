@@ -2,20 +2,18 @@ import logging
 import time
 from dataclasses import dataclass
 from datetime import timedelta
-from typing import List, Sequence
+from typing import List, Sequence, Mapping
 
 from tqdm import tqdm
 
 import audio_transformers.io.probe as probe
-from audio_transformers.cli.config import CliConfig
 from audio_transformers.cli.errors import CliUsageError
-from audio_transformers.cli.handlers.base import BaseHandler
 from audio_transformers.cli.task.errors import InitError
 from audio_transformers.cli.task.executor import TaskExecutor, FileTask, TaskStats
 from audio_transformers.cli.task.initializers import Initializer
 from audio_transformers.cli.task.model import TransformSpec, TaskSpec
 from audio_transformers.core.transform import Transform
-from audio_transformers.utils.console import Tabular, Format
+from audio_transformers.utils.console import Tabular, Format, Console
 
 logger = logging.getLogger(__name__)
 
@@ -35,24 +33,26 @@ class TransformPreview(Tabular):
         return self.name, self.description
 
 
-class TransformHandler(BaseHandler):
+class TransformHandler:
     """Transform audio files."""
 
-    def __init__(self, config: CliConfig):
-        super().__init__(config)
+    def __init__(self, console: Console, transforms: Mapping[str, Initializer], input_block_duration: float = 60.0):
+        self._console: Console = console
+        self._transforms: Mapping[str, Initializer] = transforms
+        self._input_block_duration: float = input_block_duration
 
     def list(self, format: Format = "table"):
         """List available transformations"""
-        previews = [TransformPreview(name, init.docs.brief) for name, init in self._config.transforms.items()]
-        self._output(previews, format)
+        previews = [TransformPreview(name, init.docs.brief) for name, init in self._transforms.items()]
+        self._console.output(previews, format)
 
     def params(self, name: str, format: Format = "table"):
         """List transformation parameters."""
-        if name not in self._config.transforms:
-            known = ", ".join(self._config.transforms.keys())
+        if name not in self._transforms:
+            known = ", ".join(self._transforms.keys())
             raise CliUsageError(f"Unknown transformation: '{name}'. Must be one of: {known}")
-        init: Initializer = self._config.transforms[name]
-        self._output(init.docs.params, format)
+        init: Initializer = self._transforms[name]
+        self._console.output(init.docs.params, format)
 
     def file(self, input: str, output: str, type: str | None = None, config: str | None = None, **options):
         """Process a single file."""
@@ -67,7 +67,7 @@ class TransformHandler(BaseHandler):
         elif config is not None:  # config file is specified
             transform_config = TaskSpec.from_file(config)
             specs = transform_config.transforms
-        executor = TaskExecutor(self._config.transforms, self._config.input_block_duration)
+        executor = TaskExecutor(self._transforms, self._input_block_duration)
 
         try:
             transform: Transform = executor.build_transform(specs)
@@ -87,7 +87,7 @@ class TransformHandler(BaseHandler):
             TaskExecutor.execute_subtask_parallel(task, progress.update)
         elapsed = timedelta(seconds=time.time() - start_time)
         logger.info(f"Processing done: {input} -> {output}")
-        self._ok(f"Done! Elapsed time: {elapsed}")
+        self._console.ok(f"Done! Elapsed time: {elapsed}")
 
     def files(
         self,
@@ -117,7 +117,7 @@ class TransformHandler(BaseHandler):
             raise CliUsageError("Input files pattern must be specified either via CLI arguments or config file.")
         if len(task.transforms) == 0:
             raise CliUsageError("At least one transformation must be specified via CLI arguments or config file.")
-        executor: TaskExecutor = TaskExecutor(self._config.transforms)
+        executor: TaskExecutor = TaskExecutor(self._transforms)
 
         start_time = time.time()
         stats: TaskStats = TaskExecutor.stats(task)
@@ -127,4 +127,4 @@ class TransformHandler(BaseHandler):
             except InitError as error:
                 raise CliUsageError(f"Cannot initialize {error.name} transformation: {error}")
         elapsed = timedelta(seconds=time.time() - start_time)
-        self._ok(f"Done! Elapsed time: {elapsed}")
+        self._console.ok(f"Done! Elapsed time: {elapsed}")
