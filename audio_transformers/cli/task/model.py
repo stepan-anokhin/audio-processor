@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from typing import Dict, List
 
 import yaml
@@ -19,11 +19,11 @@ class TransformSpec:
 class TaskSpec:
     """Transformation task specification."""
 
-    input_root: str = None
-    input_pattern: str = None
+    input_root: str | None = None
+    input_pattern: str | None = None
 
-    output_root: str = None
-    output_pattern: str = "{reldir}/{name}_aug.{ext}"
+    output_root: str | None = None
+    output_pattern: str | None = "{reldir}/{name}_aug.{ext}"
 
     transforms: List[TransformSpec] = field(default_factory=list)
 
@@ -40,13 +40,13 @@ class TaskSpec:
 
     @staticmethod
     def from_cli(
-        name: str | None,
-        input_root: str | None,
-        input_pattern: str | None,
-        output_root: str | None,
-        output_pattern: str | None,
-        config: str | None,
-        **options,
+            name: str | None,
+            input_root: str | None,
+            input_pattern: str | None,
+            output_root: str | None,
+            output_pattern: str | None,
+            config: str | None,
+            **options,
     ) -> "TaskSpec":
         """Create task spec from CLI arguments."""
         spec: TaskSpec = TaskSpec()
@@ -66,3 +66,8 @@ class TaskSpec:
         if spec.output_root is None:
             spec.output_root = spec.input_root
         return spec
+
+    def save(self, path: str):
+        """Save to file."""
+        with open(path, "w") as file:
+            yaml.safe_dump(asdict(self), file)
