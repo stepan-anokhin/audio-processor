@@ -3,10 +3,10 @@ import sys
 import fire
 
 from audio_transformers.cli.config import CliConfig
-from audio_transformers.cli.datasets.handler import DatasetsHandler
+from audio_transformers.cli.handlers.datasets import DatasetsHandler
 from audio_transformers.cli.errors import CliUsageError
-from audio_transformers.cli.base_handler import BaseHandler
-from audio_transformers.cli.transform_handler import TransformHandler
+from audio_transformers.cli.handlers.base import BaseHandler
+from audio_transformers.cli.handlers.transform import TransformHandler
 from audio_transformers.utils.console import Console
 
 

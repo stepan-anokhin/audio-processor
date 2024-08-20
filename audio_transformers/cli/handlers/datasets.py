@@ -4,7 +4,7 @@ from typing import Sequence, Dict
 from audio_transformers.cli.config import CliConfig
 from audio_transformers.cli.datasets.public import DatasetSource, PublicDataset
 from audio_transformers.cli.errors import CliUsageError
-from audio_transformers.cli.base_handler import BaseHandler
+from audio_transformers.cli.handlers.base import BaseHandler
 from audio_transformers.utils.console import Format
 
 DEFAULT_DOWNLOAD_DIR: str = "~/.audio-processor/datasets"
