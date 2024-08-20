@@ -138,11 +138,9 @@ class DatasetSource(Tabular):
             etag = resp.headers["ETag"]
 
         if etag == dataset.etag:
-            logger.info(f"Dataset '{dataset.name}' is up to date!")
             return dataset
 
         with requests.get(self.url, stream=True) as resp:
-            logger.info(f"Downloading '{self.name}' ({humanize.naturalsize(self.size)}) to {path}")
             archive_name = urls.filename(self.url)
             archive_dir = os.path.abspath(config.temp_folder.format(dataset_path=dataset.path))
             archive_path = os.path.join(archive_dir, archive_name)

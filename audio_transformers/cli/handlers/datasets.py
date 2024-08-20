@@ -1,6 +1,8 @@
+import logging
 import os
 from typing import Sequence, Dict
 
+import humanize
 from tqdm import tqdm
 
 from audio_transformers.cli.datasets.public import DatasetSource, PublicDataset
@@ -8,6 +10,7 @@ from audio_transformers.cli.errors import CliUsageError
 from audio_transformers.utils.console import Format, Console
 
 DEFAULT_DOWNLOAD_DIR: str = "~/.audio-processor/datasets"
+logger = logging.getLogger(__name__)
 
 
 class DatasetsHandler:
@@ -39,5 +42,6 @@ class DatasetsHandler:
             return
 
         total_bytes = source.download_bytes()
+        logger.info(f"Downloading dataset '{source.name}' ({humanize.naturalsize(total_bytes)}) to {path}")
         with tqdm(total=total_bytes, unit="bytes", unit_scale=True) as progress:
             source.pull(path, progress=progress.update)

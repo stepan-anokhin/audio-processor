@@ -6,6 +6,7 @@ from audio_transformers.cli.config import CliConfig
 from audio_transformers.cli.errors import CliUsageError
 from audio_transformers.cli.handlers.datasets import DatasetsHandler
 from audio_transformers.cli.handlers.transform import TransformHandler
+from audio_transformers.cli.logconfig import configure_logging
 from audio_transformers.utils.console import Console
 
 
@@ -43,6 +44,10 @@ class RootHandler:
 
 def run(name: str = "audio", config: CliConfig = CliConfig()):
     """CLI entry point."""
+
+    # Configure logging before running the CLI tool
+    configure_logging(config)
+
     try:
         fire.Fire(RootHandler.make(config), name=name)
     except CliUsageError as usage_error:
