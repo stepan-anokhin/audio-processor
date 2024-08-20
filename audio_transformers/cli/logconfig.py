@@ -14,7 +14,7 @@ def configure_logging(config: CliConfig = CliConfig()):
         },
         "console": {
             "format": config.log.console_format,
-        }
+        },
     }
     handlers = {
         "console": {
@@ -33,15 +33,12 @@ def configure_logging(config: CliConfig = CliConfig()):
             "filename": config.log.file,
             "backupCount": 3,
         }
-    loggers = {
-        "audio_transformers.cli": {
-            "handlers": list(handlers.keys()),
-            "level": "INFO"
+    loggers = {"audio_transformers.cli": {"handlers": list(handlers.keys()), "level": "INFO"}}
+    logging.config.dictConfig(
+        {
+            "version": 1,
+            "formatters": formatters,
+            "handlers": handlers,
+            "loggers": loggers,
         }
-    }
-    logging.config.dictConfig({
-        "version": 1,
-        "formatters": formatters,
-        "handlers": handlers,
-        "loggers": loggers,
-    })
+    )

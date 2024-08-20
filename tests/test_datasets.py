@@ -15,6 +15,7 @@ from audio_transformers.utils.console import Console
 @dataclass
 class DummyDataset:
     """Dummy dataset info."""
+
     expected_paths: Sequence[str] = (
         "./file.opus",
         "./nested/file.opus",

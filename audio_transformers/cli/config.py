@@ -12,6 +12,7 @@ LogLevel: TypeAlias = Literal["DEBUG", "INFO", "WARN", "ERROR"]
 @dataclass(frozen=True)
 class LogConfig:
     """CLI tool logging config."""
+
     console_format: str = "%(asctime)s %(levelname)-8s %(message)s"
     file_format: str = "%(asctime)s %(levelname)-8s %(name)-15s %(message)s"
     console_level: LogLevel = "INFO"
