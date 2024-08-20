@@ -30,7 +30,7 @@ def make_task(speed_factor: float = 0.5, pitch_shift: float = 1.0) -> TaskSpec:
                 params=dict(
                     speed_factor=speed_factor,
                 ),
-            )
+            ),
         ]
     )
 

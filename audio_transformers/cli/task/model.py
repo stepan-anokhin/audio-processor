@@ -40,13 +40,13 @@ class TaskSpec:
 
     @staticmethod
     def from_cli(
-            name: str | None,
-            input_root: str | None,
-            input_pattern: str | None,
-            output_root: str | None,
-            output_pattern: str | None,
-            config: str | None,
-            **options,
+        name: str | None,
+        input_root: str | None,
+        input_pattern: str | None,
+        output_root: str | None,
+        output_pattern: str | None,
+        config: str | None,
+        **options,
     ) -> "TaskSpec":
         """Create task spec from CLI arguments."""
         spec: TaskSpec = TaskSpec()
