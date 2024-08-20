@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "audio-transformers"
-version = "0.1.0"
+version = "1.0.0"
 description = "Audio data transformations library with a command-line interface."
 authors = ["Stepan Anokhin <stepan.anokhin@gmail.com>"]
 include = ["README.md"]
