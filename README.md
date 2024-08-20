@@ -231,3 +231,14 @@ Run linter:
 ```shell
 poetry run flake8 audio_transformers tests --count --max-complexity=10 --max-line-length=120 --statistics
 ```
+
+### Project Structure
+
+Packages:
+
+* `audio_transformers/core` - implementations audio transformations
+* `audio_transformers/io` - input/output logic (using `ffmpegio`)
+* `audio_transformers/cli` - CLI tool implementation
+* `audio_transformers/cli/handlers` - CLI subcommand handlers
+* `audio_transformers/utils` - misc utilities
+* `tests` - unit-tests and integration tests
