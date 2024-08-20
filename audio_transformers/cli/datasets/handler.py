@@ -2,9 +2,9 @@ import os
 from typing import Sequence, Dict
 
 from audio_transformers.cli.config import CliConfig
+from audio_transformers.cli.datasets.public import DatasetSource, PublicDataset
 from audio_transformers.cli.errors import CliUsageError
 from audio_transformers.cli.handler import Handler
-from audio_transformers.cli.datasets import DatasetSource, PublicDataset
 from audio_transformers.utils.console import Format
 
 DEFAULT_DOWNLOAD_DIR: str = "~/.audio-processor/datasets"

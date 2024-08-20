@@ -28,3 +28,8 @@ def rate(path: PathLike | str) -> int:
         raise FileNotFoundError(path)
     with ffmpegio.open(fspath(path), "ra", blocksize=1) as file:
         return file.rate
+
+
+def samples(path: PathLike | str) -> int:
+    """Get file total samples count."""
+    return int(rate(path) * duration(path))

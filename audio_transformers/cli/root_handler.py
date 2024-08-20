@@ -3,10 +3,10 @@ import sys
 import fire
 
 from audio_transformers.cli.config import CliConfig
-from audio_transformers.cli.datasets import DatasetsHandler
+from audio_transformers.cli.datasets.handler import DatasetsHandler
 from audio_transformers.cli.errors import CliUsageError
 from audio_transformers.cli.handler import Handler
-from audio_transformers.cli.transform import TransformHandler
+from audio_transformers.cli.transform_handler import TransformHandler
 from audio_transformers.utils.console import Console
 
 
@@ -24,7 +24,7 @@ def run(name: str = "audio"):
     try:
         fire.Fire(RootHandler(), name=name)
     except CliUsageError as usage_error:
-        Console.error(f"Usage error: {usage_error}")
+        Console.error(str(usage_error))
         sys.exit(2)
 
 
