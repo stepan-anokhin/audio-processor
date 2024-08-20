@@ -1,8 +1,6 @@
 from types import MappingProxyType
 from typing import Sequence, List, Mapping
 
-from audio_transformers.config.initializers import Initializer, BasicInit
-from audio_transformers.config.model import TransformSpec
 from audio_transformers.core.band_pass import BandPass
 from audio_transformers.core.band_stop import BandStop
 from audio_transformers.core.composite import Composite
@@ -13,6 +11,8 @@ from audio_transformers.core.low_pass import LowPass
 from audio_transformers.core.pitch_shift import PitchShift
 from audio_transformers.core.speed_perturbation import SpeedPerturbation
 from audio_transformers.core.transform import Transform
+from audio_transformers.task.initializers import Initializer, BasicInit
+from audio_transformers.task.model import TransformSpec
 
 DEFAULT_TRANSFORMS: Mapping[str, Initializer] = MappingProxyType(
     {
@@ -28,15 +28,15 @@ DEFAULT_TRANSFORMS: Mapping[str, Initializer] = MappingProxyType(
 )
 
 
-class ConfigReader:
-    """Reads config and builds transformation."""
+class TaskExecutor:
+    """Reads and executes task config."""
 
     transforms: Mapping[str, Initializer]
 
     def __init__(self, transforms: Mapping[str, Initializer] | None):
         self.transforms = transforms or DEFAULT_TRANSFORMS
 
-    def build(self, specs: Sequence[TransformSpec]) -> Transform:
+    def build_transform(self, specs: Sequence[TransformSpec]) -> Transform:
         """Build transformation from the spec list."""
         transforms: List[Transform] = []
         for spec in specs:

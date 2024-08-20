@@ -1,33 +1,33 @@
-import sys
-
-import fire
+from typing import Sequence, Any
 
 from audio_transformers.cli.config import CliConfig
-from audio_transformers.cli.datasets import DatasetsHandler
-from audio_transformers.cli.errors import CliUsageError
-from audio_transformers.cli.transform import TransformHandler
-from audio_transformers.utils.console import Console
+from audio_transformers.utils.console import Format, Console
 
 
-class CommandHandler:
-    """Audio transformation and augmentation tool."""
+class Handler:
+    """Base class for CLI handlers to provide shared functionality."""
 
     _config: CliConfig
 
     def __init__(self, config: CliConfig = CliConfig()):
         self._config = config
-        self.datasets = DatasetsHandler()
-        self.transform = TransformHandler(config)
 
+    def _output(self, data: Sequence[Any], format: Format = "table"):
+        """Output data collection."""
+        Console.output(data, format, self._config.file)
 
-def run(name: str = "audio"):
-    """CLI entry point."""
-    try:
-        fire.Fire(CommandHandler(), name=name)
-    except CliUsageError as usage_error:
-        Console.error(f"Usage error: {usage_error}")
-        sys.exit(2)
+    def _error(self, message: str, prefix: str = "ERROR:", end: str = "\n"):
+        """Print error message."""
+        Console.error(message, prefix, end, self._config.file)
 
+    def _fatal(self, message: str, end: str = "\n"):
+        """Print fatal error message."""
+        Console.error(message, prefix="FATAL:", end=end, file=self._config.file)
 
-if __name__ == "__main__":
-    run()
+    def _warning(self, message: str, prefix: str = "WARNING:", end: str = "\n"):
+        """Print warning message."""
+        Console.warning(message, prefix, end, file=self._config.file)
+
+    def _ok(self, message: str, prefix: str = "OK:", end: str = "\n"):
+        """Print OK message."""
+        Console.ok(message, prefix, end, file=self._config.file)

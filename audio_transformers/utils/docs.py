@@ -29,6 +29,7 @@ class Param(Tabular):
 @dataclass
 class Docs:
     """Func docs reader."""
+
     brief: str
     full_docs: str
     params: Sequence[Param]
@@ -65,9 +66,9 @@ class Docs:
     @staticmethod
     def param_doc(name: str, func_docs: str) -> str:
         """Get parameter docstring."""
-        match = re.search(rf'^\s*:\s*param\s+{name}\s*:\s*(.*)\s*$', func_docs, re.MULTILINE)
+        match = re.search(rf"^\s*:\s*param\s+{name}\s*:\s*(.*)\s*$", func_docs, re.MULTILINE)
         if match is None:
-            return ''
+            return ""
         return match.group(1)
 
     @staticmethod

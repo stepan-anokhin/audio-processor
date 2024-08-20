@@ -92,7 +92,7 @@ class Console:
 
     @staticmethod
     def output(data: Sequence[Any], format: Format = "table", file: TextIO | None = None):
-        """Normal console output."""
+        """Output data collection."""
         return print(Console.dumps(data, format), file=file)
 
     @staticmethod

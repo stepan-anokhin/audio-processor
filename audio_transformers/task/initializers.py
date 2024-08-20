@@ -3,8 +3,8 @@ from abc import abstractmethod
 from functools import cached_property
 from typing import Callable, TypeAlias, Type, Mapping
 
-from audio_transformers.config.model import TransformSpec
 from audio_transformers.core.transform import Transform
+from audio_transformers.task.model import TransformSpec
 from audio_transformers.utils.docs import Docs
 
 
@@ -42,4 +42,8 @@ class BasicInit(Initializer):
 
     def init(self, spec: TransformSpec, transformations: Mapping[str, "Initializer"]) -> Transform:
         """Create the transformation from spec."""
-        return self.factory(**spec.params)
+        params = {}
+        for param in self.docs.params:
+            if param.name in spec.params:
+                params[param.name] = spec.params[param.name]
+        return self.factory(**params)

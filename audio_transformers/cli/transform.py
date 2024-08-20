@@ -11,12 +11,13 @@ from tqdm import tqdm
 
 from audio_transformers.cli.config import CliConfig
 from audio_transformers.cli.errors import CliUsageError
-from audio_transformers.config.initializers import Initializer
-from audio_transformers.config.model import TransformSpec, ConfigFile
-from audio_transformers.config.reader import ConfigReader
+from audio_transformers.cli.handler import Handler
 from audio_transformers.core.transform import Transform
 from audio_transformers.io.file import AudioFile
-from audio_transformers.utils.console import Console, Tabular, Format
+from audio_transformers.task.executor import TaskExecutor
+from audio_transformers.task.initializers import Initializer
+from audio_transformers.task.model import TransformSpec, TaskSpec
+from audio_transformers.utils.console import Tabular, Format
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +25,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class TransformPreview(Tabular):
     """Transform preview."""
+
     name: str
     description: str
 
@@ -35,18 +37,16 @@ class TransformPreview(Tabular):
         return self.name, self.description
 
 
-class TransformHandler:
+class TransformHandler(Handler):
     """Transform audio files."""
 
-    _config: CliConfig
-
     def __init__(self, config: CliConfig):
-        self._config = config
+        super().__init__(config)
 
     def list(self, format: Format = "table"):
         """List available transformations"""
         previews = [TransformPreview(name, init.docs.brief) for name, init in self._config.transforms.items()]
-        Console.output(previews, format)
+        self._output(previews, format)
 
     def params(self, name: str, format: Format = "table"):
         """List transformation parameters."""
@@ -54,7 +54,7 @@ class TransformHandler:
             known = ", ".join(self._config.transforms.keys())
             raise CliUsageError(f"Unknown transformation: '{name}'. Must be one of: {known}")
         init: Initializer = self._config.transforms[name]
-        Console.output(init.docs.params, format)
+        self._output(init.docs.params, format)
 
     def file(self, input: str, output: str, type: str | None = None, config: str | None = None, **options):
         """Process a single file."""
@@ -67,10 +67,10 @@ class TransformHandler:
         if type is not None:
             specs = [TransformSpec(type=type, params=options)]
         elif config is not None:  # config file is specified
-            transform_config = ConfigFile.read(config)
+            transform_config = TaskSpec.from_file(config)
             specs = transform_config.transforms
-        reader = ConfigReader(self._config.transforms)
-        transform: Transform = reader.build(specs)
+        executor = TaskExecutor(self._config.transforms)
+        transform: Transform = executor.build_transform(specs)
 
         logger.info(f"Processing file {input} -> {output}")
 
@@ -90,4 +90,4 @@ class TransformHandler:
                         progress.update(len(result_block))
         elapsed = timedelta(seconds=time.time() - start_time)
         logger.info(f"Processing done: {input} -> {output}")
-        Console.ok(f"Done! Elapsed time: {elapsed}")
+        self._ok(f"Done! Elapsed time: {elapsed}")
