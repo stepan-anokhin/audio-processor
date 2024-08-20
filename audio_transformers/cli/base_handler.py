@@ -4,7 +4,7 @@ from audio_transformers.cli.config import CliConfig
 from audio_transformers.utils.console import Format, Console
 
 
-class Handler:
+class BaseHandler:
     """Base class for CLI handlers to provide shared functionality."""
 
     _config: CliConfig

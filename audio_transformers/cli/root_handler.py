@@ -5,12 +5,12 @@ import fire
 from audio_transformers.cli.config import CliConfig
 from audio_transformers.cli.datasets.handler import DatasetsHandler
 from audio_transformers.cli.errors import CliUsageError
-from audio_transformers.cli.handler import Handler
+from audio_transformers.cli.base_handler import BaseHandler
 from audio_transformers.cli.transform_handler import TransformHandler
 from audio_transformers.utils.console import Console
 
 
-class RootHandler(Handler):
+class RootHandler(BaseHandler):
     """Audio transformation and augmentation tool."""
 
     def __init__(self, config: CliConfig = CliConfig()):

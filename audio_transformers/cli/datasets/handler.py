@@ -4,13 +4,13 @@ from typing import Sequence, Dict
 from audio_transformers.cli.config import CliConfig
 from audio_transformers.cli.datasets.public import DatasetSource, PublicDataset
 from audio_transformers.cli.errors import CliUsageError
-from audio_transformers.cli.handler import Handler
+from audio_transformers.cli.base_handler import BaseHandler
 from audio_transformers.utils.console import Format
 
 DEFAULT_DOWNLOAD_DIR: str = "~/.audio-processor/datasets"
 
 
-class DatasetsHandler(Handler):
+class DatasetsHandler(BaseHandler):
     """Download and prepare for processing public datasets."""
 
     def __init__(self, config: CliConfig):

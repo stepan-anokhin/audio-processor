@@ -9,7 +9,7 @@ from tqdm import tqdm
 import audio_transformers.io.probe as probe
 from audio_transformers.cli.config import CliConfig
 from audio_transformers.cli.errors import CliUsageError
-from audio_transformers.cli.handler import Handler
+from audio_transformers.cli.base_handler import BaseHandler
 from audio_transformers.cli.task.errors import InitError
 from audio_transformers.cli.task.executor import TaskExecutor, FileTask, TaskStats
 from audio_transformers.cli.task.initializers import Initializer
@@ -35,7 +35,7 @@ class TransformPreview(Tabular):
         return self.name, self.description
 
 
-class TransformHandler(Handler):
+class TransformHandler(BaseHandler):
     """Transform audio files."""
 
     def __init__(self, config: CliConfig):
