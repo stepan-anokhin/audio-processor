@@ -3,8 +3,8 @@ from dataclasses import dataclass
 from typing import Mapping, Sequence, TextIO
 
 from audio_transformers.datasets.public import DEFAULT_DATASETS, DatasetSource
-from audio_transformers.task.executor import DEFAULT_TRANSFORMS
-from audio_transformers.task.initializers import Initializer
+from audio_transformers.cli.task.executor import DEFAULT_TRANSFORMS
+from audio_transformers.cli.task.initializers import Initializer
 
 
 @dataclass(frozen=True)

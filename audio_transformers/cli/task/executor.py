@@ -11,8 +11,8 @@ from audio_transformers.core.low_pass import LowPass
 from audio_transformers.core.pitch_shift import PitchShift
 from audio_transformers.core.speed_perturbation import SpeedPerturbation
 from audio_transformers.core.transform import Transform
-from audio_transformers.task.initializers import Initializer, BasicInit
-from audio_transformers.task.model import TransformSpec
+from audio_transformers.cli.task.initializers import Initializer, BasicInit
+from audio_transformers.cli.task.model import TransformSpec
 
 DEFAULT_TRANSFORMS: Mapping[str, Initializer] = MappingProxyType(
     {

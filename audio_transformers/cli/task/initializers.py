@@ -4,7 +4,7 @@ from functools import cached_property
 from typing import Callable, TypeAlias, Type, Mapping
 
 from audio_transformers.core.transform import Transform
-from audio_transformers.task.model import TransformSpec
+from audio_transformers.cli.task.model import TransformSpec
 from audio_transformers.utils.docs import Docs
 
 

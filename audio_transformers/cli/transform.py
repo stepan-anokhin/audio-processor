@@ -14,9 +14,9 @@ from audio_transformers.cli.errors import CliUsageError
 from audio_transformers.cli.handler import Handler
 from audio_transformers.core.transform import Transform
 from audio_transformers.io.file import AudioFile
-from audio_transformers.task.executor import TaskExecutor
-from audio_transformers.task.initializers import Initializer
-from audio_transformers.task.model import TransformSpec, TaskSpec
+from audio_transformers.cli.task.executor import TaskExecutor
+from audio_transformers.cli.task.initializers import Initializer
+from audio_transformers.cli.task.model import TransformSpec, TaskSpec
 from audio_transformers.utils.console import Tabular, Format
 
 logger = logging.getLogger(__name__)
