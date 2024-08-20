@@ -2,7 +2,7 @@ from audio_transformers.core.one_side_filter import OneSideFilter
 
 
 class HighPass(OneSideFilter):
-    """Implements high-pass filter."""
+    """Apply high-pass filter."""
 
     def __init__(self, cutoff_freq: float, roll_off: int = 6):
         """

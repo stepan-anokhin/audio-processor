@@ -1,10 +1,10 @@
 from dataclasses import dataclass, field
-from typing import Dict, TypeAlias, List
+from typing import Dict, List
 
 import yaml
 from dacite import from_dict
 
-BasicValue: TypeAlias = int | str | float | bool | None
+from audio_transformers.utils.types import BasicValue
 
 
 @dataclass

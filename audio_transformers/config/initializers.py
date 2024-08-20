@@ -1,9 +1,11 @@
 import abc
 from abc import abstractmethod
+from functools import cached_property
 from typing import Callable, TypeAlias, Type, Mapping
 
 from audio_transformers.config.model import TransformSpec
 from audio_transformers.core.transform import Transform
+from audio_transformers.utils.docs import Docs
 
 
 class Initializer(abc.ABC):
@@ -12,6 +14,11 @@ class Initializer(abc.ABC):
     Transformation initializer takes TransformSpec and builds
     the corresponding transformation object.
     """
+
+    @property
+    @abstractmethod
+    def docs(self) -> Docs:
+        """Get transformation docs."""
 
     @abstractmethod
     def init(self, spec: TransformSpec, transformations: Mapping[str, "Initializer"]) -> Transform:
@@ -28,6 +35,10 @@ class BasicInit(Initializer):
 
     def __init__(self, factory: TransformFactory):
         self.factory = factory
+
+    @cached_property
+    def docs(self) -> Docs:
+        return Docs.from_func(self.factory)
 
     def init(self, spec: TransformSpec, transformations: Mapping[str, "Initializer"]) -> Transform:
         """Create the transformation from spec."""

@@ -84,7 +84,7 @@ class AudioFile(AbstractContextManager):
         if self.mode == "r":
             self._file = ffmpegio.open(self.path, "ra", blocksize=self.block_size, sample_fmt="flt")
         else:  # write mode
-            self._file = ffmpegio.open(self.path, "wa", rate_in=self.rate, sample_fmt="flt")
+            self._file = ffmpegio.open(self.path, "wa", rate_in=self.rate, overwrite=True)
 
     @cached_property
     def duration(self) -> float:

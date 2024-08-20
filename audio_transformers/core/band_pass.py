@@ -2,7 +2,7 @@ from audio_transformers.core.two_side_filter import TwoSideFilter
 
 
 class BandPass(TwoSideFilter):
-    """Implements band-pass filter."""
+    """Apply band-pass filter."""
 
     def __init__(self, low_cutoff: float, high_cutoff: float, roll_off: int = 6):
         """

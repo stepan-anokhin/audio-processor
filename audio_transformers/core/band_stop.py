@@ -2,7 +2,7 @@ from audio_transformers.core.two_side_filter import TwoSideFilter
 
 
 class BandStop(TwoSideFilter):
-    """Implements band-stop filter."""
+    """Apply band-stop filter."""
 
     def __init__(self, low_cutoff: float, high_cutoff: float, roll_off: int = 6):
         """
